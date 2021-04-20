@@ -1,5 +1,5 @@
 <template>
-  <div style="font-family: 'Roboto Medium'" class="w-11/12 py-3 bg-white rounded flex justify-around text-gray-400">
+  <div style="font-family: 'Roboto Medium'" class="w-11/12 py-3 bg-gray-50 rounded flex justify-around text-gray-400">
     <div class="w-1/6 flex justify-center">
       <p>Name</p>
     </div>

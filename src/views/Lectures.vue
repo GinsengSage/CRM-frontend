@@ -3,10 +3,10 @@
     <div class="w-5/6 h-full flex flex-col items-center">
       <div class="w-11/12 flex items-center flex-wrap">
         <div class="flex w-1/4 items-center">
-          <div class="bg-blue-500 px-1 py-1 h-1/4 text-2xl cursor-pointer flex justify-center items-center font-bold text-white rounded hover:bg-blue-600">
+          <router-link tag="a" to="/layout/user-home" class="bg-blue-500 px-1 py-1 h-1/4 text-2xl cursor-pointer flex justify-center items-center font-bold text-white rounded hover:bg-blue-600">
             <i class="fas fa-step-backward"></i>
-          </div>
-          <p class="mx-2 text-lg text-gray-500" style="font-family: 'Roboto Medium'">{{subject}} Lectures</p>
+          </router-link>
+          <p class="mx-2 text-lg text-gray-500" style="font-family: 'Roboto Medium'">{{discipline}} Lectures</p>
         </div>
       </div>
       <div class="w-11/12 mt-4 flex flex-col bg-white pb-4 rounded items-center">
@@ -18,12 +18,11 @@
                 <i class="fas fa-search mx-2"></i>
                 <input class="bg-transparent w-full" type="text" placeholder="Quick search">
               </div>
-              <select class="ml-2">
-                <option selected>All lectures</option>
-              </select>
             </div>
             <div>
-              <input type="button" value="Add" class="text-lg py-1 px-4 text-white rounded bg-blue-500 cursor-pointer" placeholder="Password">
+              <input type="button" @click="addLecture" value="Add"
+                     class="text-lg py-1 px-4 text-white rounded bg-blue-500 cursor-pointer hover:bg-blue-600"
+                     :class="[ user.status === 'Teacher' ? 'block' : 'hidden' ]">
             </div>
           </div>
         </div>
@@ -31,15 +30,14 @@
           <LectureListHeader></LectureListHeader>
         </div>
         <div class="w-full flex flex-col items-center">
-          <Lecture></Lecture>
-          <Lecture></Lecture>
+          <LectureItem v-for="lecture in lectures" :key="lecture.id" v-bind:name="lecture.name" v-bind:id="lecture.id" v-bind:date="lecture.date"></LectureItem>
         </div>
       </div>
     </div>
     <div class="w-1/6 pr-8 mt-12 h-full flex flex-col items-center justify-center">
       <div class="w-full bg-white h-1/5 py-6 flex flex-col items-center justify-center">
         <p class="text-gray-400">Lectures count</p>
-        <p class="text-4xl mt-4" style="font-family: 'Roboto Black'">6</p>
+        <p class="text-4xl mt-4" style="font-family: 'Roboto Black'">{{lectures.length}}</p>
       </div>
     </div>
   </div>
@@ -47,18 +45,39 @@
 
 <script>
   import LectureListHeader from "@/components/LectureListHeader";
-  import Lecture from "@/components/Lecture";
+  import LectureItem from "@/components/LectureItem";
+  import axios from "axios";
   export default {
     name: "Lectures",
     components: {
-      Lecture,
+      LectureItem,
       LectureListHeader
     },
     data(){
       return{
-        subject: 'Math',
-        lectures: []
+        discipline: '',
+        lectures: [],
+        user: {}
       }
+    },
+    props:{
+      disciplineId: Number,
+    },
+    methods: {
+      addLecture(){
+        alert('hello')
+      }
+    },
+    async mounted() {
+      const headers = {
+        "Access-Control-Allow-Origin": "*",
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+      }
+      let res = await axios.get(`http://127.0.0.1:8000/api/users/getLectures/${this.disciplineId}`,{headers: headers})
+      this.lectures = res.data.userLectures
+      this.user = JSON.parse(localStorage.getItem('user'))
+      res = await axios.get(`http://127.0.0.1:8000/api/disciplines/getName/${this.disciplineId}`,{headers: headers})
+      this.discipline = res.data.name
     }
   }
 </script>

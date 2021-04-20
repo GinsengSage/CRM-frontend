@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-full flex flex-col items-center">
-      <div class="mx-6 my-8 flex items-center flex-wrap">
+      <div class="w-11/12 my-8 flex items-center flex-wrap">
         <Subject v-for="d in studentDisciplines" :key="d.id" class="my-2"></Subject>
         <Subject class="my-2"></Subject>
         <Subject class="my-2"></Subject>
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  import Subject from "@/components/Subject";
+  import Subject from "@/components/DisciplineItem";
   export default {
     name: "UserDisciplines",
     components: {

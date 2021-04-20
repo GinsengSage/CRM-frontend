@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full mt-1 pl-4 flex items-center">
+  <div class="w-full mt-1 pl-6 flex items-center">
     <div class="flex items-center">
       <div class="fas fa-circle text-blue-600" style="font-size: 7px"></div>
     </div>

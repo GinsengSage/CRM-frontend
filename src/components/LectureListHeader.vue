@@ -1,10 +1,7 @@
 <template>
   <div style="font-family: 'Roboto Medium'" class="w-11/12 py-3 px-16 bg-gray-50 rounded flex justify-between text-gray-400">
     <p>Name</p>
-    <div class="flex mr-32">
-      <p>Status</p>
-      <p class="ml-32">Date</p>
-    </div>
+    <p class="ml-32 mr-8">Date</p>
   </div>
 </template>
 

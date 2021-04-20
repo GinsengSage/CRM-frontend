@@ -3,10 +3,10 @@
     <div class="w-5/6 h-full flex flex-col items-center">
       <div class="w-11/12 flex items-center flex-wrap">
         <div class="flex w-1/4 items-center">
-          <div class="bg-blue-500 px-1 py-1 h-1/4 text-2xl cursor-pointer flex justify-center items-center font-bold text-white rounded hover:bg-blue-600">
+          <router-link tag="a" to="/layout/user-home" class="bg-blue-500 px-1 py-1 h-1/4 text-2xl cursor-pointer flex justify-center items-center font-bold text-white rounded hover:bg-blue-600">
             <i class="fas fa-step-backward"></i>
-          </div>
-          <p class="mx-2 text-lg text-gray-500" style="font-family: 'Roboto Medium'">{{subject}} Tasks</p>
+          </router-link>
+          <p class="mx-2 text-lg text-gray-500" style="font-family: 'Roboto Medium'">{{discipline}} Tasks</p>
         </div>
       </div>
       <div class="w-11/12 mt-4 flex flex-col bg-white pb-4 rounded items-center">
@@ -23,16 +23,17 @@
               </select>
             </div>
             <div>
-              <input type="button" value="Add" class="text-lg py-1 px-4 text-white rounded bg-blue-500 cursor-pointer" placeholder="Password">
+              <input type="button" @click="addTask" value="Add"
+                     class="text-lg py-1 px-4 text-white rounded bg-blue-500 cursor-pointer hover:bg-blue-600"
+                     :class="[ user.status === 'Teacher' ? 'block' : 'hidden' ]">
             </div>
           </div>
         </div>
         <div class="w-full flex justify-center">
-          <TaskListHeader class="bg-gray-50 w-11/12"></TaskListHeader>
+          <TaskListHeader class="w-11/12"></TaskListHeader>
         </div>
         <div class="w-full flex flex-col items-center">
-          <Task></Task>
-          <Task></Task>
+          <TaskItem v-for="task in tasks" :key="task.id" v-bind:task="task"></TaskItem>
         </div>
       </div>
     </div>
@@ -47,18 +48,39 @@
 
 <script>
   import TaskListHeader from "@/components/TaskListHeader";
-  import Task from "@/components/Task";
+  import TaskItem from "@/components/TaskItem";
+  import axios from "axios";
   export default {
     name: "Tasks",
     components: {
-      Task,
+      TaskItem,
       TaskListHeader
     },
     data(){
       return{
-        subject: 'Math',
-        tasks: []
+        discipline: '',
+        tasks: [],
+        user: {}
       }
+    },
+    props:{
+      disciplineId: Number,
+    },
+    methods:{
+      addTask(){
+
+      }
+    },
+    async mounted() {
+      const headers = {
+        "Access-Control-Allow-Origin": "*",
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+      }
+      let res = await axios.get(`http://127.0.0.1:8000/api/tasks/getDisciplineTasks/${this.disciplineId}`,{headers: headers})
+      this.tasks = res.data.userTasks
+      this.user = JSON.parse(localStorage.getItem('user'))
+      res = await axios.get(`http://127.0.0.1:8000/api/disciplines/getName/${this.disciplineId}`,{headers: headers})
+      this.discipline = res.data.name
     }
   }
 </script>

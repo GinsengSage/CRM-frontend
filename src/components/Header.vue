@@ -6,12 +6,14 @@
     <div style="font-family: 'Roboto Medium'" class="flex justify-center items-center text-l">
       <p class="px-2">12-11-2021</p>
       <div class="flex">
-        <i class="fas fa-cog px-1"></i>
-        <i class="fas fa-bell px-1"></i>
+        <router-link class="hover:text-blue-600" to="/"><i class="fas fa-cog px-1"></i></router-link>
+        <router-link class="hover:text-blue-600" to="notifications"><i class="fas fa-bell px-1"></i></router-link>
       </div>
-      <p class="pl-4">Jone Jones</p>
+      <p class="pl-4">{{user.name}}</p>
       <div>
-        <img class="w-2/3 h-2/3" src="">
+        <div>
+          <img style="width: 40px;" class="block rounded-full mx-3" src="../assets/images/user.jpg">
+        </div>
       </div>
     </div>
   </div>
@@ -23,7 +25,11 @@
     data(){
       return{
         currentDate: 0,
+        user: {}
       }
+    },
+    mounted() {
+      this.user = JSON.parse(localStorage.getItem('user'))
     }
   }
 </script>
