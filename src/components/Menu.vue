@@ -7,7 +7,7 @@
     </div>
     <div class="w-full h-1/2 flex">
       <div class="w-full h-full" style="font-family: 'Roboto Black'">
-        <router-link active-class="bg-blue-100 text-gray-700" v-for="item in activeMenuItems" :key="item.title" v-bind:to="item.link"  class="w-full h-1/6 text-gray-400 flex justify-center items-center hover:bg-blue-100 hover:text-gray-700">
+        <router-link exact active-class="bg-blue-100 text-gray-700" v-for="item in activeMenuItems" :key="item.title" v-bind:to="item.link"  class="w-full h-1/6 text-gray-400 flex justify-center items-center hover:bg-blue-100 hover:text-gray-700">
             <i :class="item.icon" class="mx-1.5"></i>
             <p>{{item.title}}</p>
         </router-link>
@@ -29,11 +29,11 @@
     data(){
       return{
         activeMenuItems: [
-          { title: 'Dashboard', link: 'user-home', icon: 'fas fa-border-all'},
-          { title: 'Disciplines', link: 'disciplines', icon: 'fas fa-graduation-cap'},
-          { title: 'Notifications', link: 'notifications', icon: 'fas fa-bell'},
-          { title: 'Statistic', link: 'statistic', icon: 'fas fa-chart-line'},
-          { title: 'Events', link: 'events', icon: 'fas fa-calendar-week'},
+          { title: 'Dashboard', link: '/layout/user-home', icon: 'fas fa-border-all'},
+          { title: 'Disciplines', link: '/layout/disciplines', icon: 'fas fa-graduation-cap'},
+          { title: 'Notifications', link: '/layout/notifications', icon: 'fas fa-bell'},
+          { title: 'Statistic', link: '/layout/statistic', icon: 'fas fa-chart-line'},
+          { title: 'Events', link: '/layout/events', icon: 'fas fa-calendar-week'},
         ],
         user: null
       }

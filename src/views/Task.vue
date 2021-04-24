@@ -22,7 +22,9 @@
             </div>
             <div class="bg-blue-200 my-6 px-8 py-2 mx-4 cursor-pointer rounded-full text-blue-600 hover:bg-blue-600 hover:text-white">Send</div>
           </div>
-          <input type="button" value="Delete" class="text-lg my-6 py-1 px-4 text-white rounded bg-blue-500 cursor-pointer hover:bg-blue-600">
+          <input type="button" value="Delete"
+                 class="text-lg py-1 px-4 text-white rounded bg-blue-500 cursor-pointer hover:bg-blue-600"
+                 :class="[ user.status === 'Teacher' ? 'block' : 'hidden' ]" placeholder="Password">
         </div>
         <div class="w-full mt-2 hidden">
           <p>File name</p>

@@ -40,7 +40,7 @@
     <div class="w-1/6 pr-8 mt-12 h-full flex flex-col items-center justify-center">
       <div class="w-full bg-white h-1/5 py-6 flex flex-col items-center justify-center">
         <p class="text-gray-400">Tasks count</p>
-        <p class="text-4xl mt-4" style="font-family: 'Roboto Black'">6</p>
+        <p class="text-4xl mt-4" style="font-family: 'Roboto Black'">{{tasks.length}}</p>
       </div>
     </div>
   </div>

@@ -20,7 +20,7 @@
               </div>
             </div>
             <div>
-              <input type="button" @click="addLecture" value="Add"
+              <input type="button" @click="showModal" value="Add"
                      class="text-lg py-1 px-4 text-white rounded bg-blue-500 cursor-pointer hover:bg-blue-600"
                      :class="[ user.status === 'Teacher' ? 'block' : 'hidden' ]">
             </div>
@@ -40,6 +40,7 @@
         <p class="text-4xl mt-4" style="font-family: 'Roboto Black'">{{lectures.length}}</p>
       </div>
     </div>
+    <AddLecture v-bind:discipline-id="disciplineId" v-show="isModalVisible" @close="closeModal"></AddLecture>
   </div>
 </template>
 
@@ -47,9 +48,11 @@
   import LectureListHeader from "@/components/LectureListHeader";
   import LectureItem from "@/components/LectureItem";
   import axios from "axios";
+  import AddLecture from "@/components/AddLecture";
   export default {
     name: "Lectures",
     components: {
+      AddLecture,
       LectureItem,
       LectureListHeader
     },
@@ -57,7 +60,8 @@
       return{
         discipline: '',
         lectures: [],
-        user: {}
+        user: {},
+        isModalVisible: false
       }
     },
     props:{
@@ -66,6 +70,12 @@
     methods: {
       addLecture(){
         alert('hello')
+      },
+      showModal() {
+        this.isModalVisible = true;
+      },
+      closeModal() {
+        this.isModalVisible = false;
       }
     },
     async mounted() {
