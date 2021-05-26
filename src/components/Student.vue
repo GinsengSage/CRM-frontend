@@ -1,32 +1,33 @@
 <template>
-  <router-link to="/" style="font-family: 'Roboto Medium'" class="w-11/12 px-8 py-3 text-gray-500 flex bg-blue-50 rounded mt-3 hover:bg-blue-100 cursor-pointer">
-    <div class="w-1/6 flex justify-center items-center">
+  <div style="font-family: 'Roboto Medium'"
+       class="w-11/12 px-8 py-3 text-gray-500 flex bg-blue-50 rounded mt-3 hover:bg-blue-100">
+    <div class="w-1/5 flex justify-center items-center">
       <div>
         <img>
       </div>
-      <p>Sivchik Denis</p>
+      <p>{{student.name}}</p>
     </div>
-    <div class="w-1/6 flex justify-center items-center">
-      <p>3</p>
+    <div class="w-1/5 flex justify-center items-center">
+      <p>{{student.course}}</p>
     </div>
-    <div class="w-1/6 flex justify-center items-center">
-      <p>10</p>
+    <div class="w-1/5 flex justify-center items-center">
+      <p>{{student.group}}</p>
     </div>
-    <div class="w-1/6 flex justify-center items-center">
-      <p>9.33</p>
+    <div class="w-1/5 flex justify-center items-center">
+      <p>{{student.average_score}}</p>
     </div>
-    <div class="w-1/6 flex justify-center items-center">
-      <p class="bg-green-200 rounded-full px-2 py-1">Drilla</p>
+    <div class="w-1/5 flex justify-center items-center">
+      <p>{{student.email}}</p>
     </div>
-    <div class="w-1/6 flex justify-center items-center">
-      <p>+375(44)718-1286</p>
-    </div>
-  </router-link>
+  </div>
 </template>
 
 <script>
 export default {
-name: "Student"
+  name: "Student",
+  props:{
+    student: Object
+  }
 }
 </script>
 

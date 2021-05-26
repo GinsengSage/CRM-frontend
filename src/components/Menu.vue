@@ -33,7 +33,6 @@
           { title: 'Disciplines', link: '/layout/disciplines', icon: 'fas fa-graduation-cap'},
           { title: 'Notifications', link: '/layout/notifications', icon: 'fas fa-bell'},
           { title: 'Statistic', link: '/layout/statistic', icon: 'fas fa-chart-line'},
-          { title: 'Events', link: '/layout/events', icon: 'fas fa-calendar-week'},
         ],
         user: null
       }
@@ -41,7 +40,7 @@
     mounted() {
       this.user = JSON.parse(localStorage.getItem('user'))
       if(this.user.status === 'Teacher'){
-        this.activeMenuItems.push({ title: 'Students', link: 'students', icon: 'fas fa-user-friends'})
+        this.activeMenuItems.push({ title: 'Students', link: '/layout/students', icon: 'fas fa-user-friends'})
       }
     }
   }

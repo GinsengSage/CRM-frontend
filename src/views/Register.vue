@@ -7,6 +7,10 @@
     <p class="text-gray-400">Enter your credentials to create the account</p>
     <input v-model="name" type="text" class="w-1/2 text-xl py-2 px-4 mt-4 text-gray-600 rounded bg-blue-50" placeholder="Name">
     <input pattern="^\w+([\.\w]+)*\w@\w((\.\w)*\w+)*\.\w{2,3}$" v-model="email" type="text" class="w-1/2 text-xl py-2 px-4 mt-4 text-gray-600 rounded bg-blue-50" placeholder="Email">
+    <div class="w-1/2 flex justify-between">
+      <input type="number"  v-model="group" min="1" max="10" class="w-1/2 mr-1 text-xl py-2 px-4 mt-4 text-gray-600 rounded bg-blue-50">
+      <input type="number" v-model="course" min="1" max="4" class="w-1/2 ml-1 text-xl py-2 px-4 mt-4 text-gray-600 rounded bg-blue-50">
+    </div>
     <input v-model="password" type="password" class="w-1/2 text-xl py-2 px-4 mt-4 text-gray-600 rounded bg-blue-50" placeholder="Password">
     <input v-model="rPassword" type="password" class="w-1/2 text-xl py-2 px-4 mt-4 text-gray-600 rounded bg-blue-50" placeholder="Repeat password">
     <p class="text-red-600 mt-2" :style="{display:errorMessage?'block':'none'}">{{errorMessage}}</p>
@@ -24,9 +28,10 @@
         name: '',
         email: '',
         status: 'Student',
+        course: 1,
+        group: 1,
         password: '',
         rPassword: '',
-        file: ''
       }
     },
     methods: {
@@ -41,20 +46,20 @@
         }
       },
       signUp(){
-        let user = {
-          name: this.name,
-          email: this.email,
-          status: "Student",
-          password: this.password
+        const headers = {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "multipart/form-data"
         }
-        axios.post( 'http://127.0.0.1:8000/api/register',
-            user,
-            {
-              headers: {
-                'Access-Control-Allow-Origin': '*'
-              }
-            }
-        ).then((response) =>{
+        let formData = new FormData()
+        formData.append('name', this.name)
+        formData.append('email', this.email)
+        formData.append('status', 'Student')
+        formData.append('course', this.course)
+        formData.append('group', this.group)
+        formData.append('average_score', 0)
+        formData.append('password', this.password)
+        axios.post('http://127.0.0.1:8000/api/register', formData, {headers: headers})
+        .then((response) =>{
           localStorage.setItem('user', JSON.stringify(response.data.user))
           localStorage.setItem('token', response.data.access_token)
           window.location.href = "layout/user-home"

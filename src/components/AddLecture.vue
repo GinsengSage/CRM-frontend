@@ -5,14 +5,13 @@
         <form class="bg-white m-3 flex flex-col justify-center items-center rounded" @submit.prevent="submitLecture()">
           <h1 class="text-3xl text-gray-700 mt-8" style="font-family: 'Roboto Medium'">Add new lecture</h1>
           <input v-model="name" required type="text" class="w-1/2 text-xl py-2 px-4 mt-4 text-gray-600 rounded bg-blue-50" placeholder="Name">
-          <input v-model="date" required type="datetime-local" class="w-1/2 text-xl py-2 px-4 mt-4 text-gray-600 rounded bg-blue-50">
           <div class="flex mt-4 flex-col">
               <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
           </div>
           <p class="text-red-600 mt-2" :style="{display:errorMessage?'block':'none'}">{{errorMessage}}</p>
           <div class="flex mt-1 mb-6">
-            <input type="submit" value="Send" class="w-1/2 mx-2 text-xl py-2 px-4 mt-6 text-white rounded bg-blue-500 cursor-pointer hover:bg-blue-600">
-            <input type="submit" value="Close" @click="close" class="w-1/2 mx-2 text-xl py-2 px-4 mt-6 text-white rounded bg-red-500 cursor-pointer hover:bg-red-600">
+            <input type="submit" value="Add" class="w-1/2 mx-2 text-xl py-2 px-4 mt-6 text-white rounded bg-blue-500 cursor-pointer hover:bg-blue-600">
+            <input type="button" value="Close" @click="close" class="w-1/2 mx-2 text-xl py-2 px-4 mt-6 text-white rounded bg-red-500 cursor-pointer hover:bg-red-600">
           </div>
         </form>
       </div>
@@ -27,7 +26,6 @@
     data(){
       return{
         name: '',
-        date: '',
         file: '',
         errorMessage: ''
       }
@@ -43,12 +41,21 @@
         this.file = this.$refs.file.files[0];
       },
       submitLecture(){
+        if(!confirm('Are you sure?'))
+          return
+
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0');
+        let yyyy = today.getFullYear();
+
+        today = yyyy + '-' + mm + '-' + dd;
+
         let formData = new FormData();
         formData.append('file', this.file);
         formData.append('name', this.name);
         formData.append('discipline_id', this.disciplineId);
-        formData.append('date', this.date.substr(0, 10));
-        console.log(formData)
+        formData.append('date', today);
         const headers = {
           "Access-Control-Allow-Origin": "*",
           "Authorization": `Bearer ${localStorage.getItem('token')}`,
@@ -58,7 +65,7 @@
             formData,
             { headers: headers }
         ).then(() => {
-          alert('success')
+          alert('Lecture was success added')
           this.name = ''
           this.date = ''
         })

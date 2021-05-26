@@ -16,7 +16,7 @@
               <p class="mr-4 text-xl text-gray-400" style="font-family: 'Roboto Medium'">Lectures</p>
               <div class="flex items-center bg-gray-100 rounded w-1/3 py-1 px-1 justify-center">
                 <i class="fas fa-search mx-2"></i>
-                <input class="bg-transparent w-full" type="text" placeholder="Quick search">
+                <input class="bg-transparent w-full" v-model="searchStr" type="text" placeholder="Quick search">
               </div>
             </div>
             <div>
@@ -30,7 +30,7 @@
           <LectureListHeader></LectureListHeader>
         </div>
         <div class="w-full flex flex-col items-center">
-          <LectureItem v-for="lecture in lectures" :key="lecture.id" v-bind:name="lecture.name" v-bind:id="lecture.id" v-bind:date="lecture.date"></LectureItem>
+          <LectureItem v-for="lecture in currentLectures" :key="lecture.id" v-bind:name="lecture.name" v-bind:id="lecture.id" v-bind:date="lecture.date"></LectureItem>
         </div>
       </div>
     </div>
@@ -60,33 +60,46 @@
       return{
         discipline: '',
         lectures: [],
+        currentLectures: [],
         user: {},
-        isModalVisible: false
+        isModalVisible: false,
+        searchStr: '',
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }
       }
     },
     props:{
       disciplineId: Number,
     },
     methods: {
-      addLecture(){
-        alert('hello')
+      async getLectures(){
+        let res = await axios.get(`http://127.0.0.1:8000/api/users/getLectures/${this.disciplineId}`,{headers: this.headers})
+        this.lectures = res.data.userLectures.reverse()
+        this.currentLectures = [...this.lectures]
       },
       showModal() {
-        this.isModalVisible = true;
+        this.isModalVisible = true
       },
-      closeModal() {
-        this.isModalVisible = false;
+      async closeModal() {
+        this.isModalVisible = false
+        await this.getLectures()
+      }
+    },
+    watch: {
+      async searchStr(value){
+        if(value){
+          this.currentLectures = [...this.lectures.filter(lecture => lecture.name.startsWith(value))]
+        }else{
+          this.currentLectures = [...this.lectures]
+        }
       }
     },
     async mounted() {
-      const headers = {
-        "Access-Control-Allow-Origin": "*",
-        "Authorization": `Bearer ${localStorage.getItem('token')}`
-      }
-      let res = await axios.get(`http://127.0.0.1:8000/api/users/getLectures/${this.disciplineId}`,{headers: headers})
-      this.lectures = res.data.userLectures
+      await this.getLectures()
       this.user = JSON.parse(localStorage.getItem('user'))
-      res = await axios.get(`http://127.0.0.1:8000/api/disciplines/getName/${this.disciplineId}`,{headers: headers})
+      let res = await axios.get(`http://127.0.0.1:8000/api/disciplines/getName/${this.disciplineId}`,{headers: this.headers})
       this.discipline = res.data.name
     }
   }

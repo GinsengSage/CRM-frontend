@@ -49,9 +49,20 @@ const routes = [
         component: () => import('../views/Students'),
       },
       {
+        path: 'statistic',
+        name: 'Statistic',
+        component: () => import('../views/Statistic'),
+      },
+      {
         path: 'task/:id',
         name: 'Task',
         component: () => import('../views/Task'),
+        props: true
+      },
+      {
+        path: 'notification/:id',
+        name: 'Notification',
+        component: () => import('../views/Notification'),
         props: true
       },
       {
